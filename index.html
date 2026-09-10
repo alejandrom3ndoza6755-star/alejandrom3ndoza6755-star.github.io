@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convertir imagen a Word con formato | Gratis</title>
+  <meta name="description" content="Pasa una foto a documento editable sin perder párrafos, viñetas ni alineación. OCR online gratis, 100% en tu dispositivo. JPG, PNG y HEIC.">
+  <link rel="canonical" href="https://ale-beep-stack.github.io/docformato/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <meta property="og:title" content="Convertir imagen a Word con formato | DocFormato">
+  <meta property="og:description" content="OCR que mantiene el diseño: párrafos, listas y alineación. Escanea un documento a Word online gratis, sin subir archivos.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ale-beep-stack.github.io/docformato/">
+
+  <!-- TODO: pega aquí tu script de consentimiento de cookies cuando actives AdSense -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="styles.css?v=20260910">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "DocFormato — Convertir imagen a Word con formato",
+    "description": "Herramienta gratuita que convierte fotos de documentos a Word preservando párrafos, viñetas y alineación. Procesamiento local.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+    "featureList": [
+      "Preserva párrafos y estructura",
+      "Detecta viñetas automáticamente",
+      "Mantiene alineación del texto",
+      "100% procesamiento local",
+      "Español e inglés",
+      "JPG, PNG y HEIC"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Qué formatos de imagen acepta?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Acepta JPG, PNG y HEIC (fotos de iPhone). Puedes subir capturas, fotos de móvil o documentos escaneados." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Mis documentos se suben a algún servidor?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. El procesamiento es 100% local en tu navegador. Tus documentos nunca salen de tu dispositivo." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿En qué se diferencia de otros OCR?",
+        "acceptedAnswer": { "@type": "Answer", "text": "La mayoría extrae texto plano y pierde la estructura. Esta herramienta preserva párrafos, viñetas, alineación y espaciado, y exporta un Word con formato real." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Funciona con documentos en español?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Sí. Reconoce español e inglés a la vez, útil para documentos mixtos o internacionales." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Hay algún límite de tamaño?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Funciona con archivos de hasta unos 10 MB, según la memoria de tu dispositivo. Va mejor con una página nítida y de una columna." }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a href="#main" class="skip-link">Saltar al contenido</a>
+
+  <header class="header">
+    <div class="container">
+      <div class="header__inner">
+        <a class="header__logo" href="./">
+          <span class="header__mark" aria-hidden="true">Df</span>
+          <strong>DocFormato</strong>
+        </a>
+        <nav class="header__nav">
+          <a href="#como-funciona">Cómo funciona</a>
+          <a href="#por-que">Por qué</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="container">
+        <p class="hero__eyebrow">Escanear documento a Word online gratis</p>
+        <h1 class="hero__title">Convertir imagen a Word <span class="hero__title-accent">con formato</span></h1>
+        <p class="hero__subtitle">Pasa una foto a documento editable sin perder párrafos, viñetas ni alineación. Ideal si otros OCR te dejaron todo en un bloque.</p>
+
+        <div class="tool-card" data-state="idle">
+          <noscript>
+            <p class="noscript">Esta herramienta necesita JavaScript para leer el documento en tu dispositivo. No se envía nada a un servidor.</p>
+          </noscript>
+
+          <div class="tool-card__zone" data-zone="idle">
+            <label for="file-input" class="dropzone">
+              <svg class="dropzone__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 10L12 15L17 10M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3 17V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <span class="dropzone__text"><strong>Sube desde la galería</strong> o arrastra una imagen</span>
+              <span class="dropzone__hint">JPG, PNG o HEIC · Hasta 10 MB · También puedes pegar (Ctrl+V)</span>
+            </label>
+            <input type="file" id="file-input" accept="image/jpeg,image/png,image/heic,image/heif,image/*" hidden>
+
+            <label for="camera-input" class="btn-camera">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              Tomar foto
+            </label>
+            <input type="file" id="camera-input" accept="image/*" capture="environment" hidden>
+          </div>
+
+          <div class="tool-card__zone" data-zone="loading-engine">
+            <div class="progress-section">
+              <div class="spinner" aria-hidden="true"></div>
+              <p class="progress-section__label" id="status-engine">Descargando el motor de lectura…</p>
+              <p class="progress-section__hint">Solo pasa la primera vez (~8 MB) y queda guardado en tu navegador</p>
+            </div>
+          </div>
+
+          <div class="tool-card__zone" data-zone="working">
+            <div class="progress-section">
+              <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar__fill" id="progress-fill"></div>
+              </div>
+              <p class="progress-section__label" id="status-work">Analizando el documento…</p>
+            </div>
+          </div>
+
+          <div class="tool-card__zone" data-zone="done">
+            <div class="result-preview">
+              <div class="result-preview__col">
+                <h2 class="result-preview__heading">Imagen original</h2>
+                <div class="result-preview__img-wrapper">
+                  <img id="preview-original" alt="Documento original subido">
+                </div>
+              </div>
+              <div class="result-preview__col">
+                <h2 class="result-preview__heading">Texto extraído con formato <span>(editable)</span></h2>
+                <div class="result-preview__editor-wrapper">
+                  <div id="preview-editor" class="preview-editor" contenteditable="true" spellcheck="true" role="textbox" aria-label="Texto extraído, puedes editarlo"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="result-actions">
+              <button type="button" class="btn btn--primary" id="btn-copy">Copiar al portapapeles</button>
+              <button type="button" class="btn btn--star" id="btn-download-word">Descargar Word con formato</button>
+              <button type="button" class="btn btn--ghost" id="btn-download-txt">Descargar TXT plano</button>
+            </div>
+            <button type="button" class="btn-reset" id="btn-reset">Convertir otro documento</button>
+          </div>
+
+          <div class="tool-card__zone" data-zone="error">
+            <div class="error-message">
+              <p id="error-text">Ha ocurrido un error al procesar el documento</p>
+              <button type="button" class="btn btn--secondary" id="btn-retry">Intentar de nuevo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="privacy-badge">
+          <strong>Tus documentos nunca salen de tu dispositivo — procesamiento 100% local</strong>
+          <span>Sin registro. Funciona mejor con una página nítida y de una columna (hasta ~10 MB).</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="ad-slot ad-slot--leaderboard">
+      <span class="ad-slot__label">ANUNCIO</span>
+      <!-- PEGA AQUÍ TU CÓDIGO DE ADSENSE -->
+    </div>
+
+    <div class="content-shell">
+      <div class="content-shell__main">
+        <section class="section section--how" id="como-funciona">
+          <div class="container container--narrow">
+            <h2 class="section__title">Cómo funciona</h2>
+            <div class="steps">
+              <article class="step">
+                <div class="step__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M7 10L12 15L17 10M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </div>
+                <h3 class="step__title">1. Sube o fotografía</h3>
+                <p class="step__text">Captura, foto de móvil, carta escaneada, factura o contrato. En el teléfono usa «Tomar foto» para abrir la cámara.</p>
+              </article>
+              <article class="step">
+                <div class="step__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </div>
+                <h3 class="step__title">2. Lectura con estructura</h3>
+                <p class="step__text">El motor lee el texto y reconstruye párrafos, viñetas (✓, -, •, *) y si iba a la izquierda, al centro o a la derecha.</p>
+              </article>
+              <article class="step">
+                <div class="step__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2"/></svg>
+                </div>
+                <h3 class="step__title">3. Edita y descarga</h3>
+                <p class="step__text">Compara imagen y texto lado a lado, corrige lo que haga falta y descarga un Word con formato real — no un bloque pegado.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="seo">
+          <div class="container container--narrow prose">
+            <h2 class="section__title">Pasar foto a documento editable sin perder el diseño</h2>
+            <p>Si has usado un OCR cualquiera, ya conoces el resultado: un muro de texto, listas deshechas y títulos pegados al párrafo siguiente. Esta página está pensada para otra cosa: <strong>convertir imagen a Word con formato</strong>, de forma que al abrir el archivo se reconozca la estructura del original.</p>
+            <p>El flujo es directo. Subes una captura, una foto de una página impresa o un HEIC de iPhone. La lectura ocurre en tu navegador (español e inglés a la vez). Luego ves la imagen a la izquierda y el texto reconstruido a la derecha: párrafos separados, viñetas y alineación. Si una palabra falló, la editas ahí mismo.</p>
+            <p>El Word no es un .txt disfrazado. Los párrafos van separados, las viñetas salen como lista de Word y el texto centrado queda centrado. También puedes copiar al portapapeles o bajar un TXT plano si solo necesitas el contenido.</p>
+            <p>No hay cuentas ni cupos. La primera vez el navegador descarga el motor de lectura (unos 8 MB) y lo guarda; las siguientes veces arranca antes. Las fotos no se envían a ningún servidor: <strong>OCR que mantiene el diseño</strong> y, además, se queda en el dispositivo.</p>
+            <p>Va mejor con una columna, buena luz y la página de frente. Tablas muy complejas o letra manuscrita pueden pedir un retoque manual; por eso la vista previa es editable. Para escanear documento a Word online gratis desde el móvil, usa el botón de cámara y apunta a la hoja.</p>
+          </div>
+        </section>
+
+        <div class="ad-slot ad-slot--inline">
+          <span class="ad-slot__label">ANUNCIO</span>
+          <!-- PEGA AQUÍ TU CÓDIGO DE ADSENSE -->
+        </div>
+
+        <section class="section section--why" id="por-que">
+          <div class="container container--narrow">
+            <h2 class="section__title">¿Por qué usar esta herramienta?</h2>
+            <div class="features">
+              <article class="feature">
+                <h3 class="feature__title">Mantiene el formato</h3>
+                <p class="feature__text">Otros OCR sueltan texto plano. Aquí se conservan párrafos, listas con viñetas, alineación y el aire entre secciones.</p>
+              </article>
+              <article class="feature">
+                <h3 class="feature__title">Privacidad total</h3>
+                <p class="feature__text">Procesamiento local. Tus documentos nunca salen de tu dispositivo: contratos, facturas o cartas no viajan a la nube.</p>
+              </article>
+              <article class="feature">
+                <h3 class="feature__title">Gratis y sin límites</h3>
+                <p class="feature__text">Sin registro y sin tope de usos. El techo real es el de tu aparato (unos 10 MB por imagen y la memoria del navegador).</p>
+              </article>
+              <article class="feature">
+                <h3 class="feature__title">Español e inglés</h3>
+                <p class="feature__text">Lee ambos idiomas a la vez. Sirve para apuntes, contratos bilingües o documentos mezclados.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="section section--use-cases" id="usos">
+          <div class="container container--narrow">
+            <h2 class="section__title">Ideas de uso</h2>
+            <div class="use-cases">
+              <article class="use-case">
+                <h3 class="use-case__title">Estudiantes</h3>
+                <p class="use-case__text">Pasa apuntes fotografiados o diapositivas a Word editable para resumir y estudiar.</p>
+              </article>
+              <article class="use-case">
+                <h3 class="use-case__title">Oficinistas</h3>
+                <p class="use-case__text">Digitaliza cartas, formularios y papeles del archivo sin reescribirlos a mano.</p>
+              </article>
+              <article class="use-case">
+                <h3 class="use-case__title">Freelancers</h3>
+                <p class="use-case__text">Convierte contratos y facturas recibidas en imagen para editarlas o reutilizar cláusulas.</p>
+              </article>
+              <article class="use-case">
+                <h3 class="use-case__title">Profesionales</h3>
+                <p class="use-case__text">Lleva cartas y documentos oficiales escaneados a un archivo que se puede corregir.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="section section--faq" id="faq">
+          <div class="container container--narrow">
+            <h2 class="section__title">Preguntas frecuentes</h2>
+            <div class="faq">
+              <details class="faq__item">
+                <summary class="faq__question">¿Qué formatos de imagen acepta?</summary>
+                <div class="faq__answer">
+                  <p>JPG, PNG y HEIC (fotos de iPhone). Capturas de pantalla, fotos de móvil o páginas escaneadas.</p>
+                </div>
+              </details>
+              <details class="faq__item">
+                <summary class="faq__question">¿Cómo funciona la privacidad?</summary>
+                <div class="faq__answer">
+                  <p>La lectura se hace en tu navegador. Las imágenes no se suben. La primera vez se descarga el motor (~8 MB) y queda guardado en el dispositivo.</p>
+                </div>
+              </details>
+              <details class="faq__item">
+                <summary class="faq__question">¿Por qué es mejor que otras apps?</summary>
+                <div class="faq__answer">
+                  <p>Porque no se limita a volcar texto. Reconstruye párrafos, detecta viñetas, respeta alineación y genera un .docx con formato de verdad. Además no pide cuenta.</p>
+                </div>
+              </details>
+              <details class="faq__item">
+                <summary class="faq__question">¿Hay límite de tamaño?</summary>
+                <div class="faq__answer">
+                  <p>Hasta unos 10 MB. Fotos enormes se reducen un poco para no saturar el móvil. Una página nítida funciona mejor que un PDF de muchas hojas en una sola foto.</p>
+                </div>
+              </details>
+              <details class="faq__item">
+                <summary class="faq__question">¿Puedo editar el texto antes de descargar?</summary>
+                <div class="faq__answer">
+                  <p>Sí. El panel derecho es editable. El Word se genera a partir de lo que veas ahí, incluidas tus correcciones.</p>
+                </div>
+              </details>
+              <details class="faq__item">
+                <summary class="faq__question">¿El Word tiene formato real?</summary>
+                <div class="faq__answer">
+                  <p>Sí: párrafos independientes, listas con viñetas de Word y alineación izquierda, centro o derecha. No es texto pegado en un único bloque.</p>
+                </div>
+              </details>
+              <details class="faq__item">
+                <summary class="faq__question">¿Funciona con letra a mano?</summary>
+                <div class="faq__answer">
+                  <p>Está pensada para texto impreso o de pantalla. La manuscrita suele fallar; úsala solo si la letra es muy clara y revisa el resultado.</p>
+                </div>
+              </details>
+              <details class="faq__item">
+                <summary class="faq__question">¿Por qué tarda la primera vez?</summary>
+                <div class="faq__answer">
+                  <p>Hay que bajar el motor de lectura. Después queda en el navegador y las siguientes conversiones arrancan antes.</p>
+                </div>
+              </details>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <aside class="sidebar" aria-label="Publicidad">
+        <div class="ad-slot ad-slot--sidebar">
+          <span class="ad-slot__label">ANUNCIO</span>
+          <!-- PEGA AQUÍ TU CÓDIGO DE ADSENSE -->
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__content">
+        <p class="footer__text">© 2026 DocFormato. Convertir imagen a Word con formato, en tu dispositivo.</p>
+        <nav class="footer__links">
+          <a href="privacidad.html">Privacidad</a>
+          <a href="aviso-legal.html">Aviso legal</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script defer src="lib/manifest.js?v=20260910"></script>
+  <script defer src="main.js?v=20260910"></script>
+</body>
+</html>
