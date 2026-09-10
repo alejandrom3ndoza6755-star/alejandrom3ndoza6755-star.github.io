@@ -15,7 +15,8 @@
   }
 
   const MAX_BYTES = 10 * 1024 * 1024;
-  const MAX_EDGE = 2200;
+  const MAX_EDGE = 2800;
+  const TARGET_EDGE = 2400;
   const JPEG_TYPE = "image/" + "jpeg";
 
   let currentImageURL = null;
@@ -117,6 +118,77 @@
     });
   }
 
+  function makeCanvas(w, h) {
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, w);
+    canvas.height = Math.max(1, h);
+    const ctx = canvas.getContext("2d", { alpha: false, willReadFrequently: true });
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    return { canvas: canvas, ctx: ctx };
+  }
+
+  function cropToPaper(src) {
+    const w = src.width;
+    const h = src.height;
+    const ctx = src.getContext("2d", { willReadFrequently: true });
+    const data = ctx.getImageData(0, 0, w, h).data;
+    const step = Math.max(1, Math.floor(Math.min(w, h) / 360));
+    let minX = w, minY = h, maxX = 0, maxY = 0, hits = 0;
+    for (let y = 0; y < h; y += step) {
+      for (let x = 0; x < w; x += step) {
+        const i = (y * w + x) * 4;
+        const lum = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+        if (lum > 158) {
+          hits += 1;
+          if (x < minX) minX = x;
+          if (x > maxX) maxX = x;
+          if (y < minY) minY = y;
+          if (y > maxY) maxY = y;
+        }
+      }
+    }
+    const cw = maxX - minX;
+    const ch = maxY - minY;
+    if (hits < 40 || cw < w * 0.45 || ch < h * 0.45) return src;
+    const pad = Math.round(Math.min(cw, ch) * 0.02);
+    minX = Math.max(0, minX - pad);
+    minY = Math.max(0, minY - pad);
+    maxX = Math.min(w, maxX + pad);
+    maxY = Math.min(h, maxY + pad);
+    const outW = maxX - minX;
+    const outH = maxY - minY;
+    const out = makeCanvas(outW, outH);
+    out.ctx.drawImage(src, minX, minY, outW, outH, 0, 0, outW, outH);
+    return out.canvas;
+  }
+
+  function enhanceContrast(src) {
+    const ctx = src.getContext("2d", { willReadFrequently: true });
+    const img = ctx.getImageData(0, 0, src.width, src.height);
+    const d = img.data;
+    const factor = 1.28;
+    for (let i = 0; i < d.length; i += 4) {
+      let y = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+      y = (y - 128) * factor + 136;
+      if (y < 0) y = 0;
+      if (y > 255) y = 255;
+      d[i] = d[i + 1] = d[i + 2] = y;
+    }
+    ctx.putImageData(img, 0, 0);
+    return src;
+  }
+
+  function scaleCanvas(src, scale) {
+    const w = Math.max(1, Math.round(src.width * scale));
+    const h = Math.max(1, Math.round(src.height * scale));
+    const out = makeCanvas(w, h);
+    out.ctx.imageSmoothingEnabled = true;
+    out.ctx.imageSmoothingQuality = "high";
+    out.ctx.drawImage(src, 0, 0, w, h);
+    return out.canvas;
+  }
+
   async function toOcrCanvas(blob) {
     const url = URL.createObjectURL(blob);
     try {
@@ -124,17 +196,16 @@
       let w = img.naturalWidth || img.width;
       let h = img.naturalHeight || img.height;
       if (!w || !h) throw new Error("Imagen vacía");
-      const scale = Math.min(1, MAX_EDGE / Math.max(w, h));
-      w = Math.max(1, Math.round(w * scale));
-      h = Math.max(1, Math.round(h * scale));
-      const canvas = document.createElement("canvas");
-      canvas.width = w;
-      canvas.height = h;
-      const ctx = canvas.getContext("2d", { alpha: false });
-      ctx.fillStyle = "#fff";
-      ctx.fillRect(0, 0, w, h);
-      ctx.drawImage(img, 0, 0, w, h);
-      return canvas;
+      let first = makeCanvas(w, h);
+      first.ctx.drawImage(img, 0, 0, w, h);
+      let canvas = cropToPaper(first.canvas);
+      const longEdge = Math.max(canvas.width, canvas.height);
+      if (longEdge < TARGET_EDGE) {
+        canvas = scaleCanvas(canvas, TARGET_EDGE / longEdge);
+      } else if (longEdge > MAX_EDGE) {
+        canvas = scaleCanvas(canvas, MAX_EDGE / longEdge);
+      }
+      return enhanceContrast(canvas);
     } finally {
       URL.revokeObjectURL(url);
     }
@@ -166,7 +237,7 @@
       }
     });
     try {
-      await tesseractWorker.setParameters({ tessedit_pageseg_mode: "4" });
+      await tesseractWorker.setParameters({ tessedit_pageseg_mode: "6" });
     } catch (_) {}
     return tesseractWorker;
   }
@@ -178,112 +249,177 @@
     return s.length % 2 ? s[mid] : (s[mid - 1] + s[mid]) / 2;
   }
 
-  function detectAlignment(line, pageWidth) {
-    const x0 = line.bbox.x0;
-    const x1 = line.bbox.x1;
-    const mid = ((x0 + x1) / 2) / pageWidth;
-    const width = (x1 - x0) / pageWidth;
-    if (width < 0.72 && mid > 0.36 && mid < 0.64) return "center";
-    if (mid > 0.68 && width < 0.55) return "right";
-    return "left";
+  function percentile(values, p) {
+    if (!values.length) return 0;
+    const s = values.slice().sort(function (a, b) { return a - b; });
+    const i = Math.min(s.length - 1, Math.max(0, Math.round((s.length - 1) * p)));
+    return s[i];
   }
 
-  function detectBullet(text) {
-    return /^[✓✔✗✘☑☒☐■□●○•◦‣⁃●∙·\-–—*]\s+/.test(text) ||
-      /^[vV]\s+/.test(text) ||
-      /^\d+[\.\)]\s+/.test(text);
+  function isGarbage(text) {
+    const t = (text || "").replace(/\s+/g, " ").trim();
+    if (!t || t.length <= 2) return true;
+    if (/^[A-Z]{2,4}:$/.test(t)) return true;
+    const letters = (t.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g) || []).length;
+    if (letters < 3) return true;
+    const compact = t.replace(/\s/g, "");
+    if (compact.length && letters / compact.length < 0.4 && t.length < 24) return true;
+    if (/^[\s\\|\/_\-–—=xXvViIl()[\]{}~`'":.,;]+$/.test(t)) return true;
+    return false;
+  }
+
+  function looksLikeBullet(text) {
+    const t = (text || "").trim();
+    if (/^[✓✔✗✘☑☒☐■□●○•◦‣⁃∙·]\s*\S/.test(t)) return true;
+    if (/^[\-\–—\*]\s+\S/.test(t) && t.length < 90) return true;
+    if (/^\d{1,2}[\.\)]\s+\S/.test(t) && t.length < 90) return true;
+    if (/^[YVyv]\s+[A-Za-zÁÉÍÓÚÑáéíóúñ]/.test(t) && t.length < 58) return true;
+    return false;
   }
 
   function stripBullet(text) {
     return text
-      .replace(/^[✓✔✗✘☑☒☐■□●○•◦‣⁃●∙·\-–—*]\s+/, "")
-      .replace(/^[vV]\s+/, "")
-      .replace(/^\d+[\.\)]\s+/, "")
+      .replace(/^[✓✔✗✘☑☒☐■□●○•◦‣⁃∙·]\s*/, "")
+      .replace(/^[YVyv]\s+/, "")
+      .replace(/^[\-\–—\*]\s+/, "")
+      .replace(/^\d{1,2}[\.\)]\s+/, "")
       .trim();
   }
 
-  function collectLines(ocrData) {
-    if (!ocrData) return [];
-    if (ocrData.lines && ocrData.lines.length) return ocrData.lines;
-    const lines = [];
-    const blocks = ocrData.blocks || ocrData.layoutBlocks || [];
+  function collectWords(ocrData) {
+    const words = [];
+    const blocks = (ocrData && (ocrData.blocks || ocrData.layoutBlocks)) || [];
     for (let b = 0; b < blocks.length; b++) {
       const paras = (blocks[b] && blocks[b].paragraphs) || [];
       for (let p = 0; p < paras.length; p++) {
         const paraLines = (paras[p] && paras[p].lines) || [];
-        for (let i = 0; i < paraLines.length; i++) lines.push(paraLines[i]);
+        for (let i = 0; i < paraLines.length; i++) {
+          const line = paraLines[i];
+          const lineWords = (line && line.words) || [];
+          if (lineWords.length) {
+            for (let w = 0; w < lineWords.length; w++) {
+              const word = lineWords[w];
+              const t = (word.text || "").replace(/\s+/g, " ").trim();
+              if (!t || !word.bbox) continue;
+              const conf = word.confidence == null ? 80 : word.confidence;
+              if (conf < 32 && t.length < 3) continue;
+              words.push({
+                text: t,
+                bbox: word.bbox,
+                conf: conf,
+                h: word.bbox.y1 - word.bbox.y0
+              });
+            }
+          } else if (line && line.bbox && line.text) {
+            const t = line.text.replace(/\s+/g, " ").trim();
+            if (t) {
+              words.push({
+                text: t,
+                bbox: line.bbox,
+                conf: line.confidence == null ? 80 : line.confidence,
+                h: line.bbox.y1 - line.bbox.y0
+              });
+            }
+          }
+        }
       }
     }
-    return lines;
+    return words;
+  }
+
+  function linesFromWords(words) {
+    if (!words.length) return [];
+    const mh = median(words.map(function (w) { return w.h; })) || 16;
+    const sorted = words.slice().sort(function (a, b) {
+      return (a.bbox.y0 + a.bbox.y1) / 2 - (b.bbox.y0 + b.bbox.y1) / 2;
+    });
+    const rows = [];
+    for (let i = 0; i < sorted.length; i++) {
+      const w = sorted[i];
+      const cy = (w.bbox.y0 + w.bbox.y1) / 2;
+      const last = rows[rows.length - 1];
+      if (last && Math.abs(cy - last.cy) < mh * 0.55) {
+        last.words.push(w);
+        last.cy = (last.cy * (last.words.length - 1) + cy) / last.words.length;
+      } else {
+        rows.push({ cy: cy, words: [w] });
+      }
+    }
+    return rows.map(function (row) {
+      row.words.sort(function (a, b) { return a.bbox.x0 - b.bbox.x0; });
+      const text = row.words.map(function (w) { return w.text; }).join(" ").replace(/\s+/g, " ").trim();
+      const xs0 = row.words.map(function (w) { return w.bbox.x0; });
+      const xs1 = row.words.map(function (w) { return w.bbox.x1; });
+      const ys0 = row.words.map(function (w) { return w.bbox.y0; });
+      const ys1 = row.words.map(function (w) { return w.bbox.y1; });
+      return {
+        text: text,
+        bbox: {
+          x0: Math.min.apply(null, xs0),
+          y0: Math.min.apply(null, ys0),
+          x1: Math.max.apply(null, xs1),
+          y1: Math.max.apply(null, ys1)
+        }
+      };
+    }).filter(function (line) { return line.text && !isGarbage(line.text); });
+  }
+
+  function detectAlignment(line, col) {
+    const width = col.right - col.left || 1;
+    const leftGap = (line.bbox.x0 - col.left) / width;
+    const rightGap = (col.right - line.bbox.x1) / width;
+    const lineW = (line.bbox.x1 - line.bbox.x0) / width;
+    if (lineW < 0.58 && leftGap > 0.32 && rightGap < 0.2) return "right";
+    if (lineW < 0.64 && leftGap > 0.16 && rightGap > 0.16 && Math.abs(leftGap - rightGap) < 0.18) return "center";
+    return "left";
   }
 
   function analyzeLayout(ocrData) {
-    const lines = collectLines(ocrData);
-    if (!lines.length) {
+    let visual = linesFromWords(collectWords(ocrData));
+    if (!visual.length) {
       const fallback = ((ocrData && ocrData.text) || "").split(/\n+/).map(function (t) { return t.trim(); }).filter(Boolean);
-      return fallback.map(function (text) {
-        return {
-          lines: [detectBullet(text) ? stripBullet(text) : text],
-          alignment: "left",
-          isBullet: detectBullet(text),
-          spacing: 0
-        };
+      visual = fallback.filter(function (t) { return !isGarbage(t); }).map(function (text, i) {
+        return { text: text, bbox: { x0: 0, y0: i * 20, x1: 800, y1: i * 20 + 18 } };
       });
     }
+    if (!visual.length) return [];
 
-    let pageWidth = ocrData.imageWidth || ocrData.width || 0;
-    if (!pageWidth) {
-      lines.forEach(function (line) {
-        if (line.bbox && line.bbox.x1 > pageWidth) pageWidth = line.bbox.x1;
-      });
-    }
-    pageWidth = pageWidth || 1000;
-
-    const heights = [];
-    lines.forEach(function (line) {
-      if (!line.bbox) return;
-      const h = line.bbox.y1 - line.bbox.y0;
-      if (h > 0) heights.push(h);
-    });
-    const lineH = median(heights) || 16;
-    const paraGap = Math.max(14, lineH * 1.35);
+    const col = {
+      left: percentile(visual.map(function (l) { return l.bbox.x0; }), 0.12),
+      right: percentile(visual.map(function (l) { return l.bbox.x1; }), 0.88)
+    };
+    const lineH = median(visual.map(function (l) { return l.bbox.y1 - l.bbox.y0; })) || 16;
+    const wrapGap = lineH * 0.85;
+    const paraGap = Math.max(16, lineH * 1.45);
 
     const paragraphs = [];
-    let current = { lines: [], alignment: "left", isBullet: false, spacing: 0 };
+    let current = null;
     let lastBottom = 0;
 
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      const text = (line.text || "").replace(/\s+/g, " ").trim();
-      if (!text || !line.bbox) continue;
-
+    for (let i = 0; i < visual.length; i++) {
+      const line = visual[i];
+      const raw = line.text.replace(/\s+/g, " ").trim();
+      const isBullet = looksLikeBullet(raw);
+      const alignment = detectAlignment(line, col);
+      const clean = isBullet ? stripBullet(raw) : raw;
+      if (!clean) continue;
       const spacing = lastBottom > 0 ? (line.bbox.y0 - lastBottom) : 0;
-      const isBullet = detectBullet(text);
-      const alignment = detectAlignment(line, pageWidth);
-      const clean = isBullet ? stripBullet(text) : text;
-      if (!clean) {
-        lastBottom = line.bbox.y1;
-        continue;
-      }
 
-      const needsNew = current.lines.length > 0 && (
-        current.isBullet !== isBullet ||
+      const startNew = !current ||
+        current.isBullet ||
+        isBullet ||
         current.alignment !== alignment ||
-        spacing > paraGap
-      );
+        spacing > (current.alignment === "left" && alignment === "left" ? paraGap : wrapGap);
 
-      if (needsNew) {
-        paragraphs.push(current);
+      if (startNew) {
+        if (current) paragraphs.push(current);
         current = { lines: [clean], alignment: alignment, isBullet: isBullet, spacing: spacing };
       } else {
         current.lines.push(clean);
-        current.alignment = alignment;
-        current.isBullet = isBullet;
       }
       lastBottom = line.bbox.y1;
     }
-
-    if (current.lines.length) paragraphs.push(current);
+    if (current) paragraphs.push(current);
     return paragraphs;
   }
 
@@ -424,14 +560,14 @@
 
       setState("working");
       setProgress(4);
-      setStatus("Preparando la imagen…");
+      setStatus("Mejorando la foto…");
 
       const usable = await convertHeicIfNeeded(file);
-      const canvas = await toOcrCanvas(usable);
-
       if (currentImageURL) URL.revokeObjectURL(currentImageURL);
-      currentImageURL = canvas.toDataURL(JPEG_TYPE, 0.82);
+      currentImageURL = URL.createObjectURL(usable);
       if (previewOriginal) previewOriginal.src = currentImageURL;
+
+      const canvas = await toOcrCanvas(usable);
 
       const worker = await getOCRWorker();
       setState("working");
