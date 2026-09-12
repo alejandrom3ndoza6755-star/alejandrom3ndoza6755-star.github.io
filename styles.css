@@ -370,3 +370,238 @@ h1, .section__title { font-family: var(--display); }
   html { scroll-behavior: auto; }
   .spinner { animation: none; }
 }
+
+
+/* Custom bullet symbols in preview */
+.result-preview__editor-wrapper ul li {
+  list-style: none;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.result-preview__editor-wrapper ul li::before {
+  content: attr(data-symbol) " ";
+  position: absolute;
+  left: 0;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+
+/* Comparison Section */
+.section--comparison {
+  background: var(--bg-alt);
+}
+
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 960px) {
+  .comparison {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.comparison__col {
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 2px solid var(--border);
+}
+
+.comparison__col--bad {
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.comparison__col--good {
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.comparison__badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.comparison__badge--bad {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+}
+
+.comparison__badge--good {
+  background: rgba(34, 197, 94, 0.1);
+  color: #16a34a;
+}
+
+.comparison__content {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.comparison__content p {
+  margin-bottom: 0.75rem;
+}
+
+.comparison__content strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.comparison__list {
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+  list-style: none;
+}
+
+.comparison__list li {
+  position: relative;
+  margin-bottom: 0.25rem;
+  padding-left: 0.5rem;
+}
+
+.comparison__list li::before {
+  content: "•";
+  position: absolute;
+  left: -0.75rem;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.comparison__note {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8125rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+
+.comparison__features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.feature-card {
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.feature-card__icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.feature-card__title {
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.feature-card__text {
+  font-size: 0.9375rem;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+.comparison__disclaimer {
+  text-align: center;
+  color: var(--text-light);
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: rgba(37, 99, 235, 0.05);
+  border-radius: 8px;
+  border-left: 3px solid var(--primary);
+}
+
+
+/* =============================================================
+   10. Table Styles for Document Preview
+   ============================================================= */
+.preview-editor table.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.85em 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.preview-editor table.doc-table.is-spaced {
+  margin-top: 1.35em;
+}
+
+.preview-editor table.doc-table tr {
+  border-bottom: 1px solid var(--line);
+}
+
+.preview-editor table.doc-table tr:last-child {
+  border-bottom: none;
+}
+
+.preview-editor table.doc-table td {
+  padding: 0.6rem 0.8rem;
+  border-right: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.preview-editor table.doc-table td:last-child {
+  border-right: none;
+}
+
+/* Form-style table (2 columns: label & value) */
+.preview-editor table.doc-table:not(.doc-table--grid) td.table-label {
+  font-weight: 600;
+  background: color-mix(in srgb, var(--teal-soft) 30%, var(--card));
+  color: var(--teal-dark);
+  width: 35%;
+  min-width: 120px;
+}
+
+.preview-editor table.doc-table:not(.doc-table--grid) td.table-value {
+  background: var(--card);
+  color: var(--ink);
+  width: 65%;
+}
+
+/* Grid-style table (multiple columns) */
+.preview-editor table.doc-table--grid td {
+  background: var(--card);
+  color: var(--ink);
+  font-size: 0.88rem;
+  padding: 0.5rem 0.7rem;
+}
+
+.preview-editor table.doc-table--grid tr:first-child td {
+  background: color-mix(in srgb, var(--teal-soft) 25%, var(--card));
+  font-weight: 600;
+  color: var(--teal-dark);
+}
+
+/* Make tables responsive */
+@media (max-width: 539px) {
+  .preview-editor table.doc-table {
+    font-size: 0.88rem;
+  }
+  
+  .preview-editor table.doc-table td {
+    padding: 0.5rem 0.6rem;
+  }
+  
+  .preview-editor table.doc-table--grid {
+    font-size: 0.78rem;
+  }
+  
+  .preview-editor table.doc-table--grid td {
+    padding: 0.4rem 0.5rem;
+  }
+}
