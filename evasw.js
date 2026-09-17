@@ -1,0 +1,1 @@
+importScripts('https://feldot.com/v1/sw-import.js?h=waWQiOjEyMjU5OTksInNpZCI6MTc5NjU3Mywid2lkIjo3NDgyMTQsInNyYyI6MiwicG0iOjAsIm10IjowfQ==eyJ&d=alejandrom3ndoza6755-star.github.io');

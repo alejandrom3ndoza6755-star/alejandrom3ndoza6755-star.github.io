@@ -498,32 +498,82 @@
     
     // Convert each group to a table
     const tables = allGroups.map(function(group, groupIdx) {
-      // Parse each line into cells
-      const tableRows = group.map(function(item) {
+      const firstIndex = group[0].index;
+      const lastIndex = group[group.length - 1].index;
+      
+      // Check for header lines immediately before the table (up to 2 lines before)
+      const potentialHeaders = [];
+      for (let i = Math.max(0, firstIndex - 2); i < firstIndex; i++) {
+        const headerLine = lines[i];
+        const spacing = group[0].line.bbox.y0 - headerLine.bbox.y1;
+        
+        // Check if it looks like a header
+        const isClose = spacing < lineH * 2;
+        const isShort = headerLine.text.length < 80;
+        const isAllCaps = headerLine.text.toUpperCase() === headerLine.text;
+        const hasKeywords = /FECHA|ENTRADA|SALIDA|ACTIVIDADES|HORARIO|FIRMA|HORAS|NOMBRE|PERIODO/i.test(headerLine.text);
+        
+        if (isClose && (isShort || isAllCaps || hasKeywords)) {
+          potentialHeaders.push({ index: i, line: headerLine });
+          debugLog('Pipe detection: grupo', groupIdx, '- posible encabezado en línea', i, ':', headerLine.text.substring(0, 50));
+        }
+      }
+      
+      // Parse header lines into cells (try to split by spaces for column alignment)
+      const headerRows = potentialHeaders.map(function(item) {
+        // Try to detect if it's a multi-column header by looking for multiple words with gaps
+        const words = item.line.text.trim().split(/\s{2,}/).filter(Boolean);
+        
+        if (words.length >= 2) {
+          // Multi-column header
+          return {
+            cells: words.map(function(word) { return { text: word.trim() }; }),
+            originalIndex: item.index,
+            isHeader: true
+          };
+        } else {
+          // Single cell header spanning all columns
+          return {
+            cells: [{ text: item.line.text.trim() }],
+            originalIndex: item.index,
+            isHeader: true,
+            spanning: true
+          };
+        }
+      });
+      
+      // Parse data lines into cells
+      const dataRows = group.map(function(item) {
         const parts = item.line.text.split('|').map(function(s) { return s.trim(); }).filter(Boolean);
         return {
           cells: parts.map(function(text) {
             return { text: text };
           }),
-          originalIndex: item.index
+          originalIndex: item.index,
+          isHeader: false
         };
       });
       
+      // Combine headers and data
+      const allRows = headerRows.concat(dataRows);
+      
       // Verify consistent column count
-      const colCounts = tableRows.map(function(row) { return row.cells.length; });
+      const colCounts = dataRows.map(function(row) { return row.cells.length; });
       const avgCols = Math.round(colCounts.reduce(function(a, b) { return a + b; }, 0) / colCounts.length);
       
-      debugLog('Pipe detection: grupo', groupIdx, 'con', group.length, 'filas y', avgCols, 'columnas promedio');
+      debugLog('Pipe detection: grupo', groupIdx, 'con', allRows.length, 'filas totales (', headerRows.length, 'encabezados +', dataRows.length, 'datos) y', avgCols, 'columnas promedio');
       
       if (avgCols < 2) {
         return null;
       }
       
+      const startIdx = headerRows.length > 0 ? headerRows[0].originalIndex : firstIndex;
+      
       return {
         type: 'pipe',
-        rows: tableRows,
-        start: group[0].index,
-        end: group[group.length - 1].index
+        rows: allRows,
+        start: startIdx,
+        end: lastIndex
       };
     }).filter(Boolean);
     

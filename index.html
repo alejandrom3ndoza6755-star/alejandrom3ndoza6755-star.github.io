@@ -13,7 +13,12 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://alejandrom3ndoza6755-star.github.io/">
 
-  <!-- TODO: pega aquí tu script de consentimiento de cookies cuando actives AdSense -->
+  <!-- Redes de Anuncios: Adsterra + Evadav -->
+  <!-- Adsterra Native Banner -->
+  <script src="https://pl31359340.profitableratecpmnetwork.com/66/48/aa/6648aa152a09188af46bc2c6449670c9.js"></script>
+  
+  <!-- Evadav Native Ads -->
+  <script>(function(d){let s=d.createElement('script');s.async=true;s.src='https://avases.com/code/native.js?h=waWQiOjEyMjU5OTksInNpZCI6MTc5NjU3Mywid2lkIjo3NDgyMTQsInNyYyI6Mn0=eyJ';d.head.appendChild(s);})(document);</script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -420,7 +425,16 @@
     </div>
   </footer>
 
-  <script defer src="lib/manifest.js?v=20260910f"></script>
-  <script defer src="main.js?v=20260910f"></script>
+  <script defer src="lib/manifest.js?v=20260910h"></script>
+  <script defer src="main.js?v=20260910h"></script>
+  
+  <!-- Evadav Service Worker Registration -->
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/evasw.js', { scope: '/' })
+      .then(reg => console.log('Evadav SW registered'))
+      .catch(err => console.log('Evadav SW registration failed'));
+  }
+  </script>
 </body>
 </html>
