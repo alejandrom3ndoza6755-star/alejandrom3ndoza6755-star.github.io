@@ -1419,6 +1419,11 @@
 
   async function downloadWord() {
     try {
+      // Mostrar interstitial de Evadav antes de descargar
+      if (typeof window.evadavShowInterstitial === 'function') {
+        window.evadavShowInterstitial();
+      }
+      
       const paragraphs = paragraphsFromEditor();
       const doc = await createWordDocument(paragraphs);
       const blob = await window.docx.Packer.toBlob(doc);
@@ -1431,6 +1436,11 @@
 
   function downloadTxt() {
     try {
+      // Mostrar interstitial de Evadav antes de descargar
+      if (typeof window.evadavShowInterstitial === 'function') {
+        window.evadavShowInterstitial();
+      }
+      
       const text = editorPlainText();
       const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
       saveBlob(blob, "documento.txt");
