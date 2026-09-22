@@ -2181,6 +2181,11 @@
   }
 
   function init() {
+    console.log('[INIT] Iniciando aplicación...');
+    console.log('[INIT] fileInput:', fileInput);
+    console.log('[INIT] btnDownloadWord:', btnDownloadWord);
+    console.log('[INIT] btnDownloadPdf:', btnDownloadPdf);
+    
     if (isFileProtocol() && card) {
       const note = document.createElement("p");
       note.className = "noscript";
