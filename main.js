@@ -1866,6 +1866,11 @@
   }
 
   async function downloadWord() {
+    console.log('==========================================');
+    console.log('[DOWNLOAD WORD] 📄 Iniciando descarga de Word...');
+    console.log('[DOWNLOAD WORD] lastParagraphs:', lastParagraphs ? lastParagraphs.length : 0);
+    console.log('==========================================');
+    
     try {
       // Mostrar interstitial de Evadav antes de descargar
       if (typeof window.evadavShowInterstitial === 'function') {
@@ -2181,10 +2186,13 @@
   }
 
   function init() {
-    console.log('[INIT] Iniciando aplicación...');
-    console.log('[INIT] fileInput:', fileInput);
-    console.log('[INIT] btnDownloadWord:', btnDownloadWord);
-    console.log('[INIT] btnDownloadPdf:', btnDownloadPdf);
+    console.log('==========================================');
+    console.log('[INIT] 🚀 Iniciando aplicación OCR...');
+    console.log('[INIT] fileInput encontrado:', !!fileInput, fileInput);
+    console.log('[INIT] btnDownloadWord encontrado:', !!btnDownloadWord, btnDownloadWord);
+    console.log('[INIT] btnDownloadPdf encontrado:', !!btnDownloadPdf, btnDownloadPdf);
+    console.log('[INIT] dropzone encontrado:', !!dropzone, dropzone);
+    console.log('==========================================');
     
     if (isFileProtocol() && card) {
       const note = document.createElement("p");
@@ -2211,8 +2219,24 @@
     if (btnReset) btnReset.addEventListener("click", reset);
     if (btnRetry) btnRetry.addEventListener("click", reset);
     if (btnCopy) btnCopy.addEventListener("click", copyToClipboard);
-    if (btnDownloadWord) btnDownloadWord.addEventListener("click", downloadWord);
-    if (btnDownloadPdf) btnDownloadPdf.addEventListener("click", downloadPdf);
+    if (btnDownloadWord) {
+      console.log('[INIT] ✅ Event listener agregado a btnDownloadWord');
+      btnDownloadWord.addEventListener("click", function() {
+        console.log('[CLICK] 🎯 Click en btnDownloadWord detectado!');
+        downloadWord();
+      });
+    } else {
+      console.error('[INIT] ❌ btnDownloadWord NO encontrado!');
+    }
+    if (btnDownloadPdf) {
+      console.log('[INIT] ✅ Event listener agregado a btnDownloadPdf');
+      btnDownloadPdf.addEventListener("click", function() {
+        console.log('[CLICK] 🎯 Click en btnDownloadPdf detectado!');
+        downloadPdf();
+      });
+    } else {
+      console.error('[INIT] ❌ btnDownloadPdf NO encontrado!');
+    }
     if (btnDownloadTxt) btnDownloadTxt.addEventListener("click", downloadTxt);
     
     // Listener para cambio de idioma - resetear worker de Tesseract
