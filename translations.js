@@ -1,0 +1,343 @@
+/**
+ * Traducciones para el sitio DocFormato
+ * Sistema i18n simple y eficiente
+ */
+
+const translations = {
+  en: {
+    // Meta & SEO
+    title: "Convert Image or PDF to Word and PDF | Free",
+    description: "Turn a photo or scanned PDF into an editable document without losing paragraphs, bullets, or alignment. Download in Word or PDF with selectable text. Free online OCR, 100% on your device.",
+    
+    // Header
+    nav_how: "How it works",
+    nav_why: "Why",
+    nav_faq: "FAQ",
+    
+    // Hero section
+    hero_eyebrow: "Scan document to Word or PDF online free",
+    hero_title: "Convert image or PDF to Word and PDF",
+    hero_title_accent: "with formatting",
+    hero_subtitle: "Turn a photo or scanned PDF into an editable document without losing paragraphs, bullets, or alignment. Download in Word or PDF with selectable text. Perfect if other OCR tools left everything in one block.",
+    
+    // Tool card
+    dropzone_text: "<strong>Upload from gallery</strong> or drag images or PDF",
+    dropzone_hint: "JPG, PNG, HEIC or PDF · Up to 30 pages · Max 50 MB",
+    btn_camera: "Take photo",
+    
+    // States
+    status_engine: "Downloading reading engine…",
+    status_engine_hint: "Only happens the first time (~8 MB) and stays saved in your browser",
+    status_work: "Analyzing document…",
+    
+    // Results
+    preview_original: "Original image",
+    preview_editor: "Extracted text with formatting",
+    preview_editor_hint: "(editable)",
+    btn_copy: "Copy to clipboard",
+    btn_download_word: "Download Word with formatting",
+    btn_download_pdf: "Download PDF with selectable text",
+    btn_download_txt: "Download plain TXT",
+    btn_reset: "Convert another document",
+    btn_retry: "Try again",
+    
+    // Privacy badge
+    privacy_title: "Your documents never leave your device — 100% local processing",
+    privacy_text: "No registration required. Upload up to 30 images at once (up to ~50 MB each). Mobile photos are cropped and enhanced on your device.",
+    
+    // How it works
+    how_title: "How it works",
+    step1_title: "1. Upload or photograph",
+    step1_text: "Screenshot, mobile photo, scanned letter, invoice or contract. On phone use \"Take photo\" to open camera.",
+    step2_title: "2. Reading with structure",
+    step2_text: "The engine reads the text and reconstructs paragraphs, bullets (✓, -, •, *) and whether it was left, center or right aligned.",
+    step3_title: "3. Edit and download",
+    step3_text: "Compare image and text side by side, correct what's needed and download in Word, PDF with selectable text or plain TXT — not a pasted block.",
+    
+    // Why section
+    why_title: "Why use this tool?",
+    why_bad_label: "❌ Traditional OCR",
+    why_good_label: "✅ With NisiDocsS",
+    why_bad_note: "Everything in one block, no structure",
+    why_good_note: "Preserved structure: titles, paragraphs and organized lists",
+    
+    feature1_title: "Preserves structure",
+    feature1_text: "Separated paragraphs, bulleted lists and text alignment. Not everything in one block.",
+    feature2_title: "100% private",
+    feature2_text: "Everything is processed in your browser. Your documents are never uploaded to any server.",
+    feature3_title: "Editable before download",
+    feature3_text: "Review and correct extracted text before generating the final Word document.",
+    feature4_title: "Free and unlimited",
+    feature4_text: "No registration, no subscriptions, no limits. Convert all the documents you need.",
+    
+    // FAQ
+    faq_title: "Frequently Asked Questions",
+    faq1_q: "What image formats does it accept?",
+    faq1_a: "Accepts JPG, PNG, HEIC (iPhone photos) and PDF files with scanned images. You can upload screenshots, mobile photos, scanned documents or PDFs where text is not selectable.",
+    faq2_q: "Are my documents uploaded to any server?",
+    faq2_a: "No. Processing is 100% local in your browser. Your documents never leave your device.",
+    faq3_q: "How is it different from other OCR tools?",
+    faq3_a: "Most extract plain text and lose structure. This tool preserves paragraphs, bullets, alignment and spacing, and exports a Word document with real formatting.",
+    faq4_q: "Does it work with documents in English?",
+    faq4_a: "Yes. The tool recognizes English text and can handle documents with mixed content.",
+    faq5_q: "Is there any size limit?",
+    faq5_a: "Works with files up to about 50 MB, depending on your device's memory. Works best with a clear page and single column.",
+    faq6_q: "Can I upload multiple images at once?",
+    faq6_a: "Yes! You can upload up to 30 images or a PDF with up to 30 pages. They will be processed sequentially and combined into a single document.",
+    faq7_q: "Why is it free?",
+    faq7_a: "This tool is supported by ads. We believe quality OCR should be accessible to everyone.",
+    faq8_q: "What formats can I download?",
+    faq8_a: "You can download in three formats: Word (.docx) with full formatting, PDF with selectable text (not image), or plain TXT. The PDF includes real text, not just an inserted photo.",
+    faq9_q: "Does the Word have real formatting?",
+    faq9_a: "Yes: independent paragraphs, Word bulleted lists and left, center or right alignment. It's not text pasted in a single block.",
+    faq10_q: "Does it work with handwriting?",
+    faq10_a: "It's designed for printed or screen text. Handwriting usually fails; use it only if the handwriting is very clear and review the result.",
+    faq11_q: "Why does it take so long the first time?",
+    faq11_a: "The reading engine needs to be downloaded. Afterwards it stays in the browser and subsequent conversions start faster.",
+    
+    // Footer
+    footer_legal: "Legal Notice",
+    footer_privacy: "Privacy Policy",
+    footer_cookies: "Cookies",
+    footer_contact: "Contact",
+    footer_text: "© 2026 NisiDocsS. Convert image to Word with formatting, on your device.",
+    
+    // Disclaimer note
+    disclaimer_note: "<small><strong>Note:</strong> Free OCR reads text, not visual styles (colors, bold, font sizes). For that you would need premium software like Adobe Acrobat Pro. Our advantage is preserving the <strong>document structure</strong> (paragraphs, lists, alignment) being 100% free and private.</small>",
+    
+    // SEO Content sections
+    seo_section_title: "Turn photo into editable document without losing layout",
+    seo_section_p1: "If you've used any OCR, you already know the result: a wall of text, broken lists and titles stuck to the next paragraph. This page is designed for something else: <strong>convert image to Word with formatting</strong>, so that when opening the file the structure of the original is recognized.",
+    seo_section_p2: "The flow is straightforward. Upload a screenshot, a photo of a printed page or an iPhone HEIC. Reading happens in your browser (Spanish and English simultaneously). Then you see the image on the left and the reconstructed text on the right: separated paragraphs, bullets and alignment. If a word failed, edit it right there.",
+    seo_section_p3: "You can download in three formats: Word with full formatting, PDF with selectable text (not an inserted image, it's real text you can copy and search), or plain TXT. Paragraphs are separated, bullets come out as a list and centered text remains centered.",
+    seo_section_p4: "No accounts or quotas. The first time the browser downloads the reading engine (about 8 MB) and saves it; subsequent times it starts faster. Photos are not sent to any server: <strong>OCR that maintains layout</strong> and, in addition, stays on the device.",
+    seo_section_p5: "Works best with one column, good light and the page straight on. Very complex tables or handwriting may require manual touch-up; that's why the preview is editable. To scan document to Word online free from mobile, use the camera button and point at the sheet.",
+    
+    seo_why_title: "Why use this tool?",
+    seo_why_feature1_title: "Maintains formatting",
+    seo_why_feature1_text: "Other OCRs output plain text. Here paragraphs, bulleted lists, alignment and spacing between sections are preserved.",
+    seo_why_feature2_title: "Total privacy",
+    seo_why_feature2_text: "Local processing. Your documents never leave your device: contracts, invoices or letters don't travel to the cloud.",
+    seo_why_feature3_title: "Free and unlimited",
+    seo_why_feature3_text: "No registration and no usage limits. The real limit is your device's (about 50 MB per image and browser memory).",
+    seo_why_feature4_title: "Spanish and English",
+    seo_why_feature4_text: "Reads both languages at once. Works for notes, bilingual contracts or mixed documents.",
+    
+    seo_usecases_title: "Use ideas",
+    seo_usecase1_title: "Students",
+    seo_usecase1_text: "Turn photographed notes or slides into editable Word to summarize and study.",
+    seo_usecase2_title: "Office workers",
+    seo_usecase2_text: "Digitize letters, forms and archive papers without rewriting them by hand.",
+    seo_usecase3_title: "Freelancers",
+    seo_usecase3_text: "Convert contracts and invoices received as images to edit or reuse clauses.",
+    seo_usecase4_title: "Professionals",
+    seo_usecase4_text: "Take scanned letters and official documents to a file that can be corrected.",
+    
+    // OCR Status messages
+    ocr_loading_lang: "Preparing English language… (downloaded only the first time, then cached)",
+    ocr_downloading: "Downloading language…",
+    ocr_initializing: "Initializing engine…",
+    ocr_reading: "Reading document…",
+    ocr_reconstructing: "Reconstructing formatting…",
+    ocr_done: "Done!",
+    
+    // Error messages
+    error_file_too_large: "The file is too large. The limit is 50 MB.",
+    error_pdf_too_large: "The PDF file is too large. The limit is 50 MB.",
+    error_invalid_format: "Invalid format. Upload a JPG, PNG, HEIC image or PDF file.",
+    error_no_mix: "You cannot mix PDFs with images. Upload only PDFs or only images.",
+    error_one_pdf: "You can only process 1 PDF at a time. Select a single PDF file.",
+    error_too_many_images: "Too many files. The limit is 30 images or pages.",
+    error_pdf_too_many_pages: "The PDF has {pages} pages. The limit is {max} pages.",
+    error_processing: "Could not process the document. Use a clear photo, of one page with good lighting.",
+    error_engine: "Could not load the reading engine. The first time needs internet to download languages. Check connection and try again.",
+    error_browser: "Your browser cannot run the reading engine. Try with Chrome, Edge or updated Firefox.",
+    error_file_protocol: "Don't open HTML by double clicking: the browser blocks the reader. Open http://127.0.0.1:8137/ and try there.",
+    
+    // Processing status
+    status_converting_page: "Converting page {current} of {total} from PDF to image...",
+    status_processing_page: "Processing page {current} of {total} from PDF...",
+    status_reading_page: "Reading text from page {current} of {total}...",
+    status_reconstructing_page: "Reconstructing format of page {current}...",
+    status_pdf_done: "Done! PDF processed ({pages} pages in {time}s).",
+    status_images_done: "Done! {count} images processed.",
+  },
+  
+  es: {
+    // Meta & SEO
+    title: "Convertir imagen o PDF a Word y PDF | Gratis",
+    description: "Pasa una foto o PDF escaneado a documento editable sin perder párrafos, viñetas ni alineación. Descarga en Word o PDF con texto seleccionable. OCR online gratis, 100% en tu dispositivo.",
+    
+    // Header
+    nav_how: "Cómo funciona",
+    nav_why: "Por qué",
+    nav_faq: "FAQ",
+    
+    // Hero section
+    hero_eyebrow: "Escanear documento a Word o PDF online gratis",
+    hero_title: "Convertir imagen o PDF a Word y PDF",
+    hero_title_accent: "con formato",
+    hero_subtitle: "Pasa una foto o PDF escaneado a documento editable sin perder párrafos, viñetas ni alineación. Descarga en Word o PDF con texto seleccionable. Ideal si otros OCR te dejaron todo en un bloque.",
+    
+    // Tool card
+    dropzone_text: "<strong>Sube desde la galería</strong> o arrastra imágenes o PDF",
+    dropzone_hint: "JPG, PNG, HEIC o PDF · Hasta 30 páginas · Máx 50 MB",
+    btn_camera: "Tomar foto",
+    
+    // States
+    status_engine: "Descargando el motor de lectura…",
+    status_engine_hint: "Solo pasa la primera vez (~8 MB) y queda guardado en tu navegador",
+    status_work: "Analizando el documento…",
+    
+    // Results
+    preview_original: "Imagen original",
+    preview_editor: "Texto extraído con formato",
+    preview_editor_hint: "(editable)",
+    btn_copy: "Copiar al portapapeles",
+    btn_download_word: "Descargar Word con formato",
+    btn_download_pdf: "Descargar PDF con texto seleccionable",
+    btn_download_txt: "Descargar TXT plano",
+    btn_reset: "Convertir otro documento",
+    btn_retry: "Intentar de nuevo",
+    
+    // Privacy badge
+    privacy_title: "Tus documentos nunca salen de tu dispositivo — procesamiento 100% local",
+    privacy_text: "Sin registro. Sube hasta 30 imágenes a la vez (hasta ~50 MB cada una). Las fotos de móvil se recortan y se nítidan en tu dispositivo.",
+    
+    // How it works
+    how_title: "Cómo funciona",
+    step1_title: "1. Sube o fotografía",
+    step1_text: "Captura, foto de móvil, carta escaneada, factura o contrato. En el teléfono usa «Tomar foto» para abrir la cámara.",
+    step2_title: "2. Lectura con estructura",
+    step2_text: "El motor lee el texto y reconstruye párrafos, viñetas (✓, -, •, *) y si iba a la izquierda, al centro o a la derecha.",
+    step3_title: "3. Edita y descarga",
+    step3_text: "Compara imagen y texto lado a lado, corrige lo que haga falta y descarga en Word, PDF con texto seleccionable o TXT plano — no un bloque pegado.",
+    
+    // Why section
+    why_title: "¿Por qué usar esta herramienta?",
+    why_bad_label: "❌ OCR tradicional",
+    why_good_label: "✅ Con NisiDocsS",
+    why_bad_note: "Todo en un bloque, sin estructura",
+    why_good_note: "Estructura preservada: títulos, párrafos y listas organizadas",
+    
+    feature1_title: "Preserva estructura",
+    feature1_text: "Párrafos separados, listas con viñetas y alineación de texto. No todo en un bloque.",
+    feature2_title: "100% privado",
+    feature2_text: "Todo se procesa en tu navegador. Tus documentos nunca se suben a ningún servidor.",
+    feature3_title: "Editable antes de descargar",
+    feature3_text: "Revisa y corrige el texto extraído antes de generar el documento Word final.",
+    feature4_title: "Gratis e ilimitado",
+    feature4_text: "Sin registro, sin suscripciones, sin límites. Convierte todos los documentos que necesites.",
+    
+    // FAQ
+    faq_title: "Preguntas frecuentes",
+    faq1_q: "¿Qué formatos de imagen acepta?",
+    faq1_a: "Acepta JPG, PNG, HEIC (fotos de iPhone) y archivos PDF con imágenes escaneadas. Puedes subir capturas, fotos de móvil, documentos escaneados o PDFs donde el texto no sea seleccionable.",
+    faq2_q: "¿Mis documentos se suben a algún servidor?",
+    faq2_a: "No. El procesamiento es 100% local en tu navegador. Tus documentos nunca salen de tu dispositivo.",
+    faq3_q: "¿En qué se diferencia de otros OCR?",
+    faq3_a: "La mayoría extrae texto plano y pierde la estructura. Esta herramienta preserva párrafos, viñetas, alineación y espaciado, y exporta un Word con formato real.",
+    faq4_q: "¿Funciona con documentos en español?",
+    faq4_a: "Sí. Reconoce español perfectamente y puede manejar documentos con contenido mixto.",
+    faq5_q: "¿Hay algún límite de tamaño?",
+    faq5_a: "Funciona con archivos de hasta unos 50 MB, según la memoria de tu dispositivo. Va mejor con una página nítida y de una columna.",
+    faq6_q: "¿Puedo subir múltiples imágenes a la vez?",
+    faq6_a: "¡Sí! Puedes subir hasta 30 imágenes o un PDF con hasta 30 páginas. Se procesarán secuencialmente y se combinarán en un solo documento.",
+    faq7_q: "¿Por qué es gratis?",
+    faq7_a: "Esta herramienta se mantiene con anuncios. Creemos que el OCR de calidad debería ser accesible para todos.",
+    faq8_q: "¿Qué formatos puedo descargar?",
+    faq8_a: "Puedes descargar en tres formatos: Word (.docx) con formato completo, PDF con texto seleccionable (no imagen), o TXT plano. El PDF incluye el texto real, no es solo una foto insertada.",
+    faq9_q: "¿El Word tiene formato real?",
+    faq9_a: "Sí: párrafos independientes, listas con viñetas de Word y alineación izquierda, centro o derecha. No es texto pegado en un único bloque.",
+    faq10_q: "¿Funciona con letra a mano?",
+    faq10_a: "Está pensada para texto impreso o de pantalla. La manuscrita suele fallar; úsala solo si la letra es muy clara y revisa el resultado.",
+    faq11_q: "¿Por qué tarda la primera vez?",
+    faq11_a: "Hay que bajar el motor de lectura. Después queda en el navegador y las siguientes conversiones arrancan antes.",
+    
+    // Footer
+    footer_legal: "Aviso legal",
+    footer_privacy: "Privacidad",
+    footer_cookies: "Cookies",
+    footer_contact: "Contacto",
+    footer_text: "© 2026 NisiDocsS. Convertir imagen a Word con formato, en tu dispositivo.",
+    
+    // Disclaimer note
+    disclaimer_note: "<small><strong>Nota:</strong> El OCR gratuito lee texto, no estilos visuales (colores, negritas, tamaños de fuente). Para eso necesitarías software premium como Adobe Acrobat Pro. Nuestra ventaja es preservar la <strong>estructura del documento</strong> (párrafos, listas, alineación) siendo 100% gratis y privado.</small>",
+    
+    // SEO Content sections
+    seo_section_title: "Pasar foto a documento editable sin perder el diseño",
+    seo_section_p1: "Si has usado un OCR cualquiera, ya conoces el resultado: un muro de texto, listas deshechas y títulos pegados al párrafo siguiente. Esta página está pensada para otra cosa: <strong>convertir imagen a Word con formato</strong>, de forma que al abrir el archivo se reconozca la estructura del original.",
+    seo_section_p2: "El flujo es directo. Subes una captura, una foto de una página impresa o un HEIC de iPhone. La lectura ocurre en tu navegador (español e inglés a la vez). Luego ves la imagen a la izquierda y el texto reconstruido a la derecha: párrafos separados, viñetas y alineación. Si una palabra falló, la editas ahí mismo.",
+    seo_section_p3: "Puedes descargar en tres formatos: Word con formato completo, PDF con texto seleccionable (no es una imagen insertada, es texto real que puedes copiar y buscar), o TXT plano. Los párrafos van separados, las viñetas salen como lista y el texto centrado queda centrado.",
+    seo_section_p4: "No hay cuentas ni cupos. La primera vez el navegador descarga el motor de lectura (unos 8 MB) y lo guarda; las siguientes veces arranca antes. Las fotos no se envían a ningún servidor: <strong>OCR que mantiene el diseño</strong> y, además, se queda en el dispositivo.",
+    seo_section_p5: "Va mejor con una columna, buena luz y la página de frente. Tablas muy complejas o letra manuscrita pueden pedir un retoque manual; por eso la vista previa es editable. Para escanear documento a Word online gratis desde el móvil, usa el botón de cámara y apunta a la hoja.",
+    
+    seo_why_title: "¿Por qué usar esta herramienta?",
+    seo_why_feature1_title: "Mantiene el formato",
+    seo_why_feature1_text: "Otros OCR sueltan texto plano. Aquí se conservan párrafos, listas con viñetas, alineación y el aire entre secciones.",
+    seo_why_feature2_title: "Privacidad total",
+    seo_why_feature2_text: "Procesamiento local. Tus documentos nunca salen de tu dispositivo: contratos, facturas o cartas no viajan a la nube.",
+    seo_why_feature3_title: "Gratis y sin límites",
+    seo_why_feature3_text: "Sin registro y sin tope de usos. El techo real es el de tu aparato (unos 50 MB por imagen y la memoria del navegador).",
+    seo_why_feature4_title: "Español e inglés",
+    seo_why_feature4_text: "Lee ambos idiomas a la vez. Sirve para apuntes, contratos bilingües o documentos mezclados.",
+    
+    seo_usecases_title: "Ideas de uso",
+    seo_usecase1_title: "Estudiantes",
+    seo_usecase1_text: "Pasa apuntes fotografiados o diapositivas a Word editable para resumir y estudiar.",
+    seo_usecase2_title: "Oficinistas",
+    seo_usecase2_text: "Digitaliza cartas, formularios y papeles del archivo sin reescribirlos a mano.",
+    seo_usecase3_title: "Freelancers",
+    seo_usecase3_text: "Convierte contratos y facturas recibidas en imagen para editarlas o reutilizar cláusulas.",
+    seo_usecase4_title: "Profesionales",
+    seo_usecase4_text: "Lleva cartas y documentos oficiales escaneados a un archivo que se puede corregir.",
+    
+    // OCR Status messages
+    ocr_loading_lang: "Preparando idioma español… (se descarga solo la primera vez, luego se guarda en caché)",
+    ocr_downloading: "Descargando idiomas…",
+    ocr_initializing: "Inicializando el motor…",
+    ocr_reading: "Leyendo el documento…",
+    ocr_reconstructing: "Reconstruyendo formato…",
+    ocr_done: "¡Listo!",
+    
+    // Error messages
+    error_file_too_large: "El archivo es demasiado grande. El límite es de 50 MB.",
+    error_pdf_too_large: "El archivo PDF es demasiado grande. El límite es de 50 MB.",
+    error_invalid_format: "Formato no válido. Sube una imagen JPG, PNG, HEIC o un archivo PDF.",
+    error_no_mix: "No puedes mezclar PDFs con imágenes. Sube solo PDFs o solo imágenes.",
+    error_one_pdf: "Solo puedes procesar 1 PDF a la vez. Selecciona un solo archivo PDF.",
+    error_too_many_images: "Demasiados archivos. El límite es de 30 imágenes o páginas.",
+    error_pdf_too_many_pages: "El PDF tiene {pages} páginas. El límite es {max} páginas.",
+    error_processing: "No se pudo leer el documento. Usa una foto nítida, de una página y con buena luz.",
+    error_engine: "No se pudo cargar el motor de lectura. La primera vez necesita internet para bajar los idiomas. Revisa la conexión e inténtalo otra vez.",
+    error_browser: "Tu navegador no puede ejecutar el motor de lectura. Prueba con Chrome, Edge o Firefox actualizado.",
+    error_file_protocol: "No abras el HTML a doble clic: el navegador bloquea el lector. Abre http://127.0.0.1:8137/ y prueba ahí.",
+    
+    // Processing status
+    status_converting_page: "Convirtiendo página {current} de {total} del PDF a imagen...",
+    status_processing_page: "Procesando página {current} de {total} del PDF...",
+    status_reading_page: "Leyendo texto de página {current} de {total}...",
+    status_reconstructing_page: "Reconstruyendo formato de página {current}...",
+    status_pdf_done: "¡Listo! PDF procesado ({pages} páginas en {time}s).",
+    status_images_done: "¡Listo! {count} imágenes procesadas.",
+  }
+};
+
+// Helper function to get translation with fallback
+function t(key, params = {}) {
+  const currentLang = window.__CURRENT_LANG__ || 'en';
+  let text = translations[currentLang]?.[key] || translations['en'][key] || key;
+  
+  // Replace placeholders {key} with params
+  Object.keys(params).forEach(param => {
+    text = text.replace(new RegExp(`\\{${param}\\}`, 'g'), params[param]);
+  });
+  
+  return text;
+}
+
+// Export for use in main.js
+if (typeof window !== 'undefined') {
+  window.translations = translations;
+  window.t = t;
+}

@@ -107,6 +107,7 @@ h1, .section__title { font-family: var(--display); }
   gap: 1rem; padding: 0.9rem 0;
 }
 .header__logo { display: flex; align-items: center; gap: 0.65rem; font-weight: 700; }
+.header__logo-img { height: 40px; width: auto; border-radius: 4px; }
 .header__mark {
   width: 2rem; height: 2rem; border-radius: 9px;
   background: var(--teal); color: #fff;
@@ -231,6 +232,20 @@ h1, .section__title { font-family: var(--display); }
 .preview-editor p.is-spaced { margin-top: 1.15em; }
 .preview-editor ul { margin: 0 0 0.85em; padding-left: 1.2em; }
 .preview-editor li { margin: 0.15em 0; }
+
+/* Page separator for multiple images */
+.page-separator {
+  margin: 1.5em 0;
+  padding: 0.8em 1em;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9em;
+  color: var(--teal);
+  background: color-mix(in srgb, var(--teal-soft) 20%, var(--card));
+  border-top: 2px dashed var(--teal-soft);
+  border-bottom: 2px dashed var(--teal-soft);
+  border-radius: 4px;
+}
 
 .result-actions {
   display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: center; margin-bottom: 0.7rem;
@@ -603,5 +618,59 @@ h1, .section__title { font-family: var(--display); }
   
   .preview-editor table.doc-table--grid td {
     padding: 0.4rem 0.5rem;
+  }
+}
+
+
+/* ============================================================================
+   Language Switcher
+   ========================================================================= */
+
+.lang-switcher {
+  display: inline-flex;
+  gap: 0.25rem;
+  margin-left: 1.5rem;
+  padding-left: 1.5rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.lang-switcher__btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lang-switcher__btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
+}
+
+.lang-switcher__btn.active {
+  background: #fff;
+  border-color: #fff;
+  color: var(--color-accent);
+  cursor: default;
+}
+
+@media (max-width: 640px) {
+  .lang-switcher {
+    margin-left: auto;
+    padding-left: 0;
+    border-left: none;
+  }
+  
+  .header__nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
   }
 }
