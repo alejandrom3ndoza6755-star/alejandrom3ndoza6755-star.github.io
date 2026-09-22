@@ -136,6 +136,8 @@
     updatedCount += updateTextContent('[data-i18n="why_title"]', 'why_title');
     updatedCount += updateTextContent('[data-i18n="why_bad_label"]', 'why_bad_label');
     updatedCount += updateTextContent('[data-i18n="why_good_label"]', 'why_good_label');
+    updatedCount += updateTextContent('[data-i18n="comparison_bad_example"]', 'comparison_bad_example');
+    updatedCount += updateHTML('[data-i18n-html="comparison_good_example"]', 'comparison_good_example');
     updatedCount += updateTextContent('[data-i18n="why_bad_note"]', 'why_bad_note');
     updatedCount += updateTextContent('[data-i18n="why_good_note"]', 'why_good_note');
 
