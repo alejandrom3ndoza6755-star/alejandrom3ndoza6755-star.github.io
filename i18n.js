@@ -136,8 +136,6 @@
     updatedCount += updateTextContent('[data-i18n="why_title"]', 'why_title');
     updatedCount += updateTextContent('[data-i18n="why_bad_label"]', 'why_bad_label');
     updatedCount += updateTextContent('[data-i18n="why_good_label"]', 'why_good_label');
-    updatedCount += updateTextContent('[data-i18n="comparison_bad_example"]', 'comparison_bad_example');
-    updatedCount += updateHTML('[data-i18n-html="comparison_good_example"]', 'comparison_good_example');
     updatedCount += updateTextContent('[data-i18n="why_bad_note"]', 'why_bad_note');
     updatedCount += updateTextContent('[data-i18n="why_good_note"]', 'why_good_note');
 
@@ -211,8 +209,21 @@
   // Helper para actualizar innerHTML (para textos con HTML como <strong>)
   function updateHTML(selector, key) {
     const elements = document.querySelectorAll(selector);
+    console.log('[i18n] updateHTML - selector:', selector, 'key:', key, 'found:', elements.length);
     elements.forEach(el => {
-      el.innerHTML = t(key);
+      const translatedHTML = t(key);
+      console.log('[i18n] updateHTML - Inserting HTML for key:', key, 'length:', translatedHTML.length);
+      el.innerHTML = translatedHTML;
+      // Después de insertar HTML, actualizar elementos hijos con data-i18n
+      const childElements = el.querySelectorAll('[data-i18n]');
+      console.log('[i18n] updateHTML - Found child elements with data-i18n:', childElements.length);
+      childElements.forEach(child => {
+        const childKey = child.getAttribute('data-i18n');
+        if (childKey && t(childKey)) {
+          console.log('[i18n] updateHTML - Updating child:', childKey);
+          child.textContent = t(childKey);
+        }
+      });
     });
     return elements.length;
   }
