@@ -1525,14 +1525,44 @@
   }
 
   function saveBlob(blob, filename) {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
+    console.log('[SAVEBLOB] 📦 Iniciando descarga...');
+    console.log('[SAVEBLOB] Blob:', blob);
+    console.log('[SAVEBLOB] Filename:', filename);
+    console.log('[SAVEBLOB] Blob size:', blob.size, 'bytes');
+    console.log('[SAVEBLOB] Blob type:', blob.type);
+    
+    try {
+      const url = URL.createObjectURL(blob);
+      console.log('[SAVEBLOB] URL creado:', url);
+      
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.style.display = 'none';
+      
+      console.log('[SAVEBLOB] Elemento <a> creado');
+      console.log('[SAVEBLOB] href:', a.href);
+      console.log('[SAVEBLOB] download:', a.download);
+      
+      document.body.appendChild(a);
+      console.log('[SAVEBLOB] Elemento agregado al body');
+      
+      console.log('[SAVEBLOB] Haciendo click...');
+      a.click();
+      console.log('[SAVEBLOB] Click ejecutado');
+      
+      setTimeout(function () {
+        a.remove();
+        URL.revokeObjectURL(url);
+        console.log('[SAVEBLOB] ✅ Limpieza completada');
+      }, 1500);
+      
+      console.log('[SAVEBLOB] ✅ Descarga iniciada!');
+    } catch (error) {
+      console.error('[SAVEBLOB] ❌ Error:', error);
+      console.error('[SAVEBLOB] Error stack:', error.stack);
+      alert('Error al descargar el archivo: ' + error.message);
+    }
   }
 
   async function processMultipleImages(files) {
