@@ -1872,17 +1872,30 @@
     console.log('==========================================');
     
     try {
+      console.log('[DOWNLOAD WORD] 1️⃣ Intentando mostrar interstitial...');
       // Mostrar interstitial de Evadav antes de descargar
       if (typeof window.evadavShowInterstitial === 'function') {
         window.evadavShowInterstitial();
       }
       
+      console.log('[DOWNLOAD WORD] 2️⃣ Obteniendo párrafos del editor...');
       const paragraphs = paragraphsFromEditor();
+      console.log('[DOWNLOAD WORD] Párrafos obtenidos:', paragraphs ? paragraphs.length : 0);
+      
+      console.log('[DOWNLOAD WORD] 3️⃣ Creando documento Word...');
       const doc = await createWordDocument(paragraphs);
+      console.log('[DOWNLOAD WORD] Documento creado:', !!doc);
+      
+      console.log('[DOWNLOAD WORD] 4️⃣ Convirtiendo a Blob...');
       const blob = await window.docx.Packer.toBlob(doc);
+      console.log('[DOWNLOAD WORD] Blob creado:', blob ? blob.size + ' bytes' : 'null');
+      
+      console.log('[DOWNLOAD WORD] 5️⃣ Guardando archivo...');
       saveBlob(blob, "documento.docx");
+      console.log('[DOWNLOAD WORD] ✅ Descarga completada!');
     } catch (error) {
-      console.error("Download Word error:", error);
+      console.error("[DOWNLOAD WORD] ❌ Error:", error);
+      console.error("[DOWNLOAD WORD] Error stack:", error.stack);
       showError("No se pudo crear el Word. Revisa el texto extraído e inténtalo otra vez.");
     }
   }
