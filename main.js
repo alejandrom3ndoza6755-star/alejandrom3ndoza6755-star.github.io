@@ -1539,6 +1539,7 @@
       a.href = url;
       a.download = filename;
       a.style.display = 'none';
+      a.rel = 'noopener'; // Seguridad
       
       console.log('[SAVEBLOB] Elemento <a> creado');
       console.log('[SAVEBLOB] href:', a.href);
@@ -1548,14 +1549,24 @@
       console.log('[SAVEBLOB] Elemento agregado al body');
       
       console.log('[SAVEBLOB] Haciendo click...');
-      a.click();
-      console.log('[SAVEBLOB] Click ejecutado');
+      
+      // Forzar descarga con múltiples métodos
+      setTimeout(function() {
+        a.click();
+        console.log('[SAVEBLOB] Click ejecutado (método 1)');
+        
+        // Método alternativo para navegadores que bloquean
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+          window.navigator.msSaveOrOpenBlob(blob, filename);
+          console.log('[SAVEBLOB] Descarga forzada (IE/Edge legacy)');
+        }
+      }, 100); // Pequeño delay para que el evento no se cancele
       
       setTimeout(function () {
         a.remove();
         URL.revokeObjectURL(url);
         console.log('[SAVEBLOB] ✅ Limpieza completada');
-      }, 1500);
+      }, 2000); // Mayor tiempo antes de limpiar
       
       console.log('[SAVEBLOB] ✅ Descarga iniciada!');
     } catch (error) {
