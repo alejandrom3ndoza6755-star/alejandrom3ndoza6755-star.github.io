@@ -1,1 +1,15 @@
-importScripts('https://feldot.com/v1/sw-import.js?h=waWQiOjEyMjU5OTksInNpZCI6MTc5NjU3Mywid2lkIjo3NDgyMTQsInNyYyI6MiwicG0iOjAsIm10IjowfQ==eyJ&d=alejandrom3ndoza6755-star.github.io');
+/* Service worker desactivado: deja de interceptar clics y descargas. */
+self.addEventListener("install", function () {
+  self.skipWaiting();
+});
+self.addEventListener("activate", function (event) {
+  event.waitUntil(
+    self.registration.unregister().then(function () {
+      return self.clients.matchAll();
+    }).then(function (clients) {
+      clients.forEach(function (client) {
+        if (client.url && "navigate" in client) client.navigate(client.url);
+      });
+    })
+  );
+});

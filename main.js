@@ -1525,55 +1525,42 @@
   }
 
   function saveBlob(blob, filename) {
-    console.log('[SAVEBLOB] 📦 Iniciando descarga...');
-    console.log('[SAVEBLOB] Blob:', blob);
-    console.log('[SAVEBLOB] Filename:', filename);
-    console.log('[SAVEBLOB] Blob size:', blob.size, 'bytes');
-    console.log('[SAVEBLOB] Blob type:', blob.type);
-    
     try {
+      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob, filename);
+        return;
+      }
       const url = URL.createObjectURL(blob);
-      console.log('[SAVEBLOB] URL creado:', url);
-      
       const a = document.createElement("a");
       a.href = url;
       a.download = filename;
-      a.style.display = 'none';
-      a.rel = 'noopener'; // Seguridad
-      
-      console.log('[SAVEBLOB] Elemento <a> creado');
-      console.log('[SAVEBLOB] href:', a.href);
-      console.log('[SAVEBLOB] download:', a.download);
-      
+      a.rel = "noopener";
       document.body.appendChild(a);
-      console.log('[SAVEBLOB] Elemento agregado al body');
-      
-      console.log('[SAVEBLOB] Haciendo click...');
-      
-      // Forzar descarga con múltiples métodos
-      setTimeout(function() {
-        a.click();
-        console.log('[SAVEBLOB] Click ejecutado (método 1)');
-        
-        // Método alternativo para navegadores que bloquean
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          window.navigator.msSaveOrOpenBlob(blob, filename);
-          console.log('[SAVEBLOB] Descarga forzada (IE/Edge legacy)');
-        }
-      }, 100); // Pequeño delay para que el evento no se cancele
-      
+      a.click();
+      a.remove();
       setTimeout(function () {
-        a.remove();
         URL.revokeObjectURL(url);
-        console.log('[SAVEBLOB] ✅ Limpieza completada');
-      }, 2000); // Mayor tiempo antes de limpiar
-      
-      console.log('[SAVEBLOB] ✅ Descarga iniciada!');
+      }, 2500);
     } catch (error) {
-      console.error('[SAVEBLOB] ❌ Error:', error);
-      console.error('[SAVEBLOB] Error stack:', error.stack);
-      alert('Error al descargar el archivo: ' + error.message);
+      console.error("[SAVEBLOB]", error);
+      showError("Error al descargar el archivo: " + (error && error.message ? error.message : "inténtalo otra vez"));
     }
+  }
+
+  function openFilePicker(input) {
+    if (!input) return;
+    try {
+      input.value = "";
+    } catch (err) { /* ignore */ }
+    try {
+      if (typeof input.showPicker === "function") {
+        input.showPicker();
+        return;
+      }
+    } catch (err) {
+      /* showPicker puede fallar; se usa click */
+    }
+    input.click();
   }
 
   async function processMultipleImages(files) {
@@ -1913,25 +1900,9 @@
     console.log('==========================================');
     
     try {
-      console.log('[DOWNLOAD WORD] 1️⃣ Intentando mostrar interstitial...');
-      // Mostrar interstitial de Evadav antes de descargar
-      if (typeof window.evadavShowInterstitial === 'function') {
-        window.evadavShowInterstitial();
-      }
-      
-      console.log('[DOWNLOAD WORD] 2️⃣ Obteniendo párrafos del editor...');
       const paragraphs = paragraphsFromEditor();
-      console.log('[DOWNLOAD WORD] Párrafos obtenidos:', paragraphs ? paragraphs.length : 0);
-      
-      console.log('[DOWNLOAD WORD] 3️⃣ Creando documento Word...');
       const doc = await createWordDocument(paragraphs);
-      console.log('[DOWNLOAD WORD] Documento creado:', !!doc);
-      
-      console.log('[DOWNLOAD WORD] 4️⃣ Convirtiendo a Blob...');
       const blob = await window.docx.Packer.toBlob(doc);
-      console.log('[DOWNLOAD WORD] Blob creado:', blob ? blob.size + ' bytes' : 'null');
-      
-      console.log('[DOWNLOAD WORD] 5️⃣ Guardando archivo...');
       saveBlob(blob, "documento.docx");
       console.log('[DOWNLOAD WORD] ✅ Descarga completada!');
     } catch (error) {
@@ -1943,11 +1914,6 @@
 
   function downloadTxt() {
     try {
-      // Mostrar interstitial de Evadav antes de descargar
-      if (typeof window.evadavShowInterstitial === 'function') {
-        window.evadavShowInterstitial();
-      }
-      
       const text = editorPlainText();
       const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
       saveBlob(blob, "documento.txt");
@@ -1958,12 +1924,6 @@
 
   async function downloadPdf() {
     try {
-      // Mostrar interstitial de Evadav antes de descargar
-      if (typeof window.evadavShowInterstitial === 'function') {
-        window.evadavShowInterstitial();
-      }
-      
-      // Cargar la librería jsPDF
       await loadScriptOnce("lib/vendor/jspdf.umd.min.js");
       if (!window.jspdf) throw new Error("No se pudo cargar la librería PDF");
       
@@ -2264,6 +2224,22 @@
         if (e.target.files && e.target.files[0]) handleFileSelect(e.target.files[0]);
       });
     }
+    const btnPickFiles = $("#btn-pick-files");
+    const btnCamera = $("#btn-camera");
+    if (btnPickFiles) {
+      btnPickFiles.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        openFilePicker(fileInput);
+      });
+    }
+    if (btnCamera) {
+      btnCamera.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        openFilePicker(cameraInput);
+      });
+    }
     if (dropzone) {
       dropzone.addEventListener("dragover", handleDragOver);
       dropzone.addEventListener("dragleave", handleDragLeave);
@@ -2292,6 +2268,7 @@
       console.error('[INIT] ❌ btnDownloadPdf NO encontrado!');
     }
     if (btnDownloadTxt) btnDownloadTxt.addEventListener("click", downloadTxt);
+    void loadScriptOnce("lib/vendor/docx.umd.js");
     
     // Listener para cambio de idioma - resetear worker de Tesseract
     window.addEventListener('languagechange', function(e) {
