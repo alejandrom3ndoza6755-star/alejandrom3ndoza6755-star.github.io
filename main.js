@@ -1555,6 +1555,45 @@
     }
   }
 
+  function protectToolFromAdOverlays() {
+    function isAppUi(el) {
+      return !!(el.closest && el.closest(".tool-card, .header, .hero__ad, .ad-slot, .lang-switcher, .footer, .privacy-badge"));
+    }
+    function isSocialBar(rect) {
+      const vh = window.innerHeight;
+      const bottomBar = rect.height <= 160 && rect.top >= vh - 180;
+      const topBar = rect.height <= 90 && rect.bottom <= 110;
+      return bottomBar || topBar;
+    }
+    function scan() {
+      const tool = card || $(".tool-card");
+      if (!tool) return;
+      const toolRect = tool.getBoundingClientRect();
+      const nodes = document.body.querySelectorAll("div, iframe, ins, aside, section, a");
+      for (let i = 0; i < nodes.length; i++) {
+        const el = nodes[i];
+        if (tool.contains(el) || isAppUi(el)) continue;
+        const cs = window.getComputedStyle(el);
+        if (cs.display === "none" || cs.visibility === "hidden" || Number(cs.opacity) === 0) continue;
+        if (cs.position !== "fixed" && cs.position !== "sticky") continue;
+        const r = el.getBoundingClientRect();
+        if (r.width < 8 || r.height < 8) continue;
+        if (isSocialBar(r)) continue;
+        const overlapsTool = r.left < toolRect.right && r.right > toolRect.left && r.top < toolRect.bottom && r.bottom > toolRect.top;
+        const fullPage = r.width >= window.innerWidth * 0.8 && r.height >= window.innerHeight * 0.45;
+        if (fullPage || (overlapsTool && r.width * r.height > 40000)) {
+          el.style.setProperty("pointer-events", "none", "important");
+        }
+      }
+    }
+    scan();
+    setInterval(scan, 2000);
+    if (typeof MutationObserver === "function") {
+      const mo = new MutationObserver(function () { scan(); });
+      mo.observe(document.body, { childList: true, subtree: true });
+    }
+  }
+
   function openFilePicker(input) {
     if (!input) return;
     try {
@@ -2277,6 +2316,7 @@
     }
     if (btnDownloadTxt) btnDownloadTxt.addEventListener("click", downloadTxt);
     void loadScriptOnce("lib/vendor/docx.umd.js");
+    protectToolFromAdOverlays();
     
     // Listener para cambio de idioma - resetear worker de Tesseract
     window.addEventListener('languagechange', function(e) {
