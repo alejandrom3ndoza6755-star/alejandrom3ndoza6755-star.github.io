@@ -1535,12 +1535,20 @@
       a.href = url;
       a.download = filename;
       a.rel = "noopener";
+      a.style.position = "fixed";
+      a.style.left = "-9999px";
       document.body.appendChild(a);
-      a.click();
-      a.remove();
+      // MouseEvent sin bubbling: el cambio de idioma escuchaba todos los clics
+      // (html[data-lang]) y cancelaba el <a download> de Word/TXT.
+      try {
+        a.dispatchEvent(new MouseEvent("click", { bubbles: false, cancelable: true, view: window }));
+      } catch (err) {
+        a.click();
+      }
       setTimeout(function () {
+        a.remove();
         URL.revokeObjectURL(url);
-      }, 2500);
+      }, 4000);
     } catch (error) {
       console.error("[SAVEBLOB]", error);
       showError("Error al descargar el archivo: " + (error && error.message ? error.message : "inténtalo otra vez"));

@@ -254,7 +254,7 @@
 
   // Actualizar el selector de idioma
   function updateLanguageSwitcher(lang) {
-    const buttons = document.querySelectorAll('[data-lang]');
+    const buttons = document.querySelectorAll('.lang-switcher__btn[data-lang]');
     buttons.forEach(btn => {
       const btnLang = btn.getAttribute('data-lang');
       if (btnLang === lang) {
@@ -280,7 +280,7 @@
 
     // Configurar event listeners para botones de idioma
     document.addEventListener('click', function(e) {
-      const langBtn = e.target.closest('[data-lang]');
+      const langBtn = e.target.closest('.lang-switcher__btn[data-lang]');
       if (langBtn) {
         e.preventDefault();
         const newLang = langBtn.getAttribute('data-lang');
